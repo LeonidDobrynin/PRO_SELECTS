@@ -30,14 +30,12 @@
 --JOIN playlist p ON tp.playlist_id = p.id 
 --WHERE m.name IN('Кино');
 --------------------------------
---SELECT a.name FROM album a
---JOIN musicians_albums ma ON a.id = ma.album_id 
---JOIN musician m ON ma.musician_id = m.id 
---JOIN genres_musicians gm ON m.id = gm.musician_id 
---JOIN genre g ON gm.genre_id = g.id
---GROUP BY a.name
---HAVING COUNT(DISTINCT g.name) > 1
---ORDER BY a.name;
+SELECT a.name FROM album a
+JOIN musicians_albums ma ON a.id = ma.album_id 
+JOIN musician m ON ma.musician_id = m.id 
+JOIN genres_musicians gm ON m.id = gm.musician_id 
+JOIN genre g ON gm.genre_id = g.id
+WHERE 
 --------------------------------
 --SELECT t.name FROM track t 
 --LEFT JOIN tracks_playlists tp ON t.id = tp.track_id
@@ -48,7 +46,6 @@
 --JOIN track t ON a.id = t.album_id 
 --WHERE t.duration = (SELECT MIN(duration) FROM track);
 ----------------------------------
-SELECT a.name, COUNT FROM album a 
-JOIN track t ON a.id = t.album_id
-WHERE a.name ;
+SELECT a.name FROM album a 
+JOIN track t ON a.id = t.album_id 
 ----------------------------------
