@@ -12,6 +12,7 @@
 --SELECT  name FROM  track
 --WHERE name LIKE '%Мой%' OR name LIKE '%My%'
 --------------------------------------------
+--------------------------------------------
 --SELECT COUNT(*) FROM genres_musicians;
 --SELECT COUNT(*) FROM album a
 --JOIN track t ON a.id = t.album_id
@@ -29,14 +30,13 @@
 --JOIN tracks_playlists tp ON t.id = tp.track_id 
 --JOIN playlist p ON tp.playlist_id = p.id 
 --WHERE m.name IN('Кино');
---------------------------------
-SELECT a.name FROM album a
-JOIN musicians_albums ma ON a.id = ma.album_id 
-JOIN musician m ON ma.musician_id = m.id 
-JOIN genres_musicians gm ON m.id = gm.musician_id 
-JOIN genre g ON gm.genre_id = g.id
-WHERE 
---------------------------------
+----------------
+--SELECT DISTINCT a.name from album a 
+--JOIN musicians_albums ma on ma.album_id  = a.id 
+--JOIN genres_musicians gm on ma.musician_id  = gm.musician_id
+--GROUP BY a.name, gm.musician_id 
+--HAVING count(gm.genre_id)>1
+----------------
 --SELECT t.name FROM track t 
 --LEFT JOIN tracks_playlists tp ON t.id = tp.track_id
 --WHERE tp.playlist_id IS NULL;
@@ -47,5 +47,11 @@ WHERE
 --WHERE t.duration = (SELECT MIN(duration) FROM track);
 ----------------------------------
 SELECT a.name FROM album a 
-JOIN track t ON a.id = t.album_id 
+JOIN track t ON a.id = t.album_id
+GROUP BY a.name
+HAVING COUNT(*) = (SELECT MIN(county) FROM album a
+JOIN (SELECT a2.name, a2.id, COUNT(*) AS "county" FROM album a2
+JOIN track t ON a2.id = t.album_id
+GROUP BY a2.name, a2.id) m ON a.id = m.id)
+ORDER BY COUNT(*);
 ----------------------------------
