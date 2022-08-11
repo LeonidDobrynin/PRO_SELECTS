@@ -36,7 +36,6 @@
 --JOIN genres_musicians gm on ma.musician_id  = gm.musician_id
 --GROUP BY a.name, gm.musician_id 
 --HAVING count(gm.genre_id)>1
-----------------
 --SELECT t.name FROM track t 
 --LEFT JOIN tracks_playlists tp ON t.id = tp.track_id
 --WHERE tp.playlist_id IS NULL;
@@ -45,13 +44,12 @@
 --JOIN album a ON ma.album_id = a.id 
 --JOIN track t ON a.id = t.album_id 
 --WHERE t.duration = (SELECT MIN(duration) FROM track);
-----------------------------------
 SELECT a.name FROM album a 
 JOIN track t ON a.id = t.album_id
 GROUP BY a.name
-HAVING COUNT(*) = (SELECT MIN(county) FROM album a
-JOIN (SELECT a2.name, a2.id, COUNT(*) AS "county" FROM album a2
-JOIN track t ON a2.id = t.album_id
-GROUP BY a2.name, a2.id) m ON a.id = m.id)
+HAVING COUNT(*) = (SELECT COUNT(*) FROM album a
+JOIN track t ON a.id = t.album_id
+GROUP BY a.name
+ORDER BY COUNT(*) DESC
+LIMIT 1)
 ORDER BY COUNT(*);
-----------------------------------
